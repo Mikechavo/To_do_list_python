@@ -1,18 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Simple To-Do List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>My To-Do List</h1>
+    <h1>Task List</h1>
     <ul>
-        {% for task in tasks %}
-        <li>{{ task }}</li>
+        {% for task_entry in tasks %}
+            <li>
+                {{ task_entry[0] }} - {{ task_entry[1].strftime('%Y-%m-%d') }}
+                <form action="/delete_task" method="post" style="display: inline;">
+                    <input type="hidden" name="task_index" value="{{ loop.index0 }}">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
         {% endfor %}
     </ul>
-    <form method="POST" action="/add_task">
-        <input type="text" name="task" placeholder="Add a new task" required>
-        <button type="submit">Add</button>
+    <form action="/add_task" method="post">
+        <label for="task">Task:</label>
+        <input type="text" name="task" required>
+        <label for="date">Date:</label>
+        <input type="date" name="date" required>
+        <button type="submit">Add Task</button>
     </form>
 </body>
 </html>
+
+
